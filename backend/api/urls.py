@@ -1,10 +1,13 @@
 from django.urls import path
-from .views import list_requests, add_request, delete_request
-
+from . import views
 
 urlpatterns = [
-    path('requests/', list_requests),
-    path('requests/add/', add_request),
-    path('requests/delete/<int:pk>/', delete_request),
+    # CRUD
+    path("requests/", views.loan_requests, name="loan_requests"),
+    path("requests/<int:pk>/", views.loan_request_detail, name="loan_request_detail"),
+    # analytics / misc
+    path("eda/", views.eda_summary, name="eda_summary"),
+    path("eda/raw/", views.eda_raw, name="eda_raw"),
+    path("metrics/", views.model_performance, name="model_performance"),
+    path("report/", views.data_issues, name="data_issues"),
 ]
-
