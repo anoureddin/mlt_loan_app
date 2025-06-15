@@ -237,7 +237,7 @@ os.makedirs(output_dir, exist_ok=True)
 file_path = os.path.join(output_dir, '02_weighted_models_vs_baseline_models.csv')
 
 # Save the dataframe to a CSV file
-results_df.to_csv(file_path, index=True)
+comparison_df.to_csv(file_path, index=True)
 
 print(f"DataFrame saved to {file_path}")
 
