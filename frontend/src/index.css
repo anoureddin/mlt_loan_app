@@ -1,68 +1,254 @@
+/* ===============================================================
+   Loan-approval frontend – global plain-CSS
+   Palette: Indigo (primary) · Emerald (success) · Rose (danger)
+   =============================================================== */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    /* backgrounds / text */
+    --bg-body: #f6f5f4;
+    --bg-card: #ffffff;
+    --text-body: #1f2937;
+    /* slate-800 */
+    --border-base: #e5e7eb;
+    /* gray-200 */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    /* accents */
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --emerald-500: #10b981;
+    --rose-500: #ef4444;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+/* --------------------------------------------------------------- */
+/*  Reset / body                                                   */
+/* --------------------------------------------------------------- */
+* {
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    background: var(--bg-body);
+    color: var(--text-body);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* --------------------------------------------------------------- */
+/*  Generic layout helpers                                         */
+/* --------------------------------------------------------------- */
+.container {
+    width: 90%;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-base);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    background: var(--indigo-600);
+    color: #fff;
+}
+
+/* --------------------------------------------------------------- */
+/*  Buttons                                                        */
+/* --------------------------------------------------------------- */
+.button {
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--border-base);
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: opacity 0.15s;
+}
+
+.button.primary {
+    background: var(--indigo-600);
+    border-color: var(--indigo-600);
+    color: #fff;
+}
+
+.button.outline {
+    background: #fff;
+    color: var(--text-body);
+}
+
+.button.danger {
+    background: var(--rose-500);
+    border-color: var(--rose-500);
+    color: #fff;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+/* --------------------------------------------------------------- */
+/*  Forms / tables                                                 */
+/* --------------------------------------------------------------- */
+label {
+    display: block;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+input,
+select {
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--border-base);
+    border-radius: 0.375rem;
+    padding: 0 0.5rem;
+}
+
+.table {
+    width: 100%;
+    font-size: 0.875rem;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.5rem;
+    white-space: nowrap;
+}
+
+.table thead {
+    background: #f1f5f9;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid var(--border-base);
+}
+
+.table tbody tr:hover {
+    background: #f1f5f9;
+}
+
+/* --------------------------------------------------------------- */
+/*  Spinner                                                        */
+/* --------------------------------------------------------------- */
+.spinner {
+    border: 4px solid var(--border-base);
+    border-top: 4px solid var(--indigo-600);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --------------------------------------------------------------- */
+/*  Issue card highlight                                           */
+/* --------------------------------------------------------------- */
+.issue-card {
+    border-left: 4px solid var(--rose-500);
+    padding-left: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.issue-card h4 {
+    margin: 0 0 0.25rem;
+}
+
+.issue-card p {
+    margin: 0.25rem 0;
+}
+
+/* --------------------------------------------------------------- */
+/*  Navbar (improved)                                              */
+/* --------------------------------------------------------------- */
+.navbar {
+    position: sticky;
+    top: 0;
+    margin-top: 0.75rem;
+    /* small gap from top edge */
+    z-index: 40;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-base);
+    padding: .5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+    margin-left: .75rem;
+    font-size: .875rem;
+    padding: .375rem .75rem;
+    border-radius: .375rem
+}
+
+.nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    font-weight: 600;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.25rem;
+}
+
+.nav-link {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.875rem;
+    padding-bottom: 3px;
+    /* room for underline */
+}
+
+.nav-link::after {
+    /* animated underline */
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--indigo-600);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+/* active state: keep underline only */
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------- */
+/*  Canvas charts inside cards                                     */
+/* --------------------------------------------------------------- */
+.card canvas {
+    max-width: 100% !important;
 }
