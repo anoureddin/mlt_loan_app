@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import Button from "../components/Button";
 import Spinner from "../components/Spinner";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 // /* snake_case → Title Case */
 const labelize = (s) =>
@@ -28,13 +29,16 @@ export default function LoanRequestsPage() {
 
     useEffect(() => { load(); }, []);
 
-    const handleDelete = async (id) => {
-        if (!confirm("Delete this record?")) return;
+    const [pendingId, setPendingId] = useState(null);
+
+    const doDelete = async () => {
         try {
-            await api.deleteLoanRequest(id);
-            setRows(rows.filter((r) => r.id !== id));
+            await api.deleteLoanRequest(pendingId);
+            setRows(rows.filter((r) => r.id !== pendingId));
         } catch (err) {
             alert(err.message);
+        } finally {
+            setPendingId(null);
         }
     };
 
@@ -63,12 +67,18 @@ export default function LoanRequestsPage() {
                                     <td key={k}>{String(v)}</td>
                                 ))}
                                 <td>
-                                    <Button variant="danger" onClick={() => handleDelete(row.id)}>Delete</Button>
+                                    <Button variant="danger" onClick={() => setPendingId(row.id)}>Delete</Button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+                <ConfirmDialog
+                    open={pendingId !== null}
+                    message="Are you sure? Delete this request?"
+                    onCancel={() => setPendingId(null)}
+                    onConfirm={doDelete}
+                />
             </div>
         </div>
     );
