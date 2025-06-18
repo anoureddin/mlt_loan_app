@@ -3,24 +3,19 @@
    Palette: Indigo (primary) · Emerald (success) · Rose (danger)
    =============================================================== */
 :root {
-    /* backgrounds / text */
-    --bg-body: #f6f5f4;
+    --bg-body: #f5f7fa;
+    --bg-navbar: #e2e8f0;
+    --bg-table-head: #f1f5f9;
     --bg-card: #ffffff;
     --text-body: #1f2937;
-    /* slate-800 */
     --border-base: #e5e7eb;
-    /* gray-200 */
 
-    /* accents */
     --indigo-500: #6366f1;
     --indigo-600: #4f46e5;
-    --emerald-500: #10b981;
     --rose-500: #ef4444;
+    --emerald-500: #10b981;
 }
 
-/* --------------------------------------------------------------- */
-/*  Reset / body                                                   */
-/* --------------------------------------------------------------- */
 * {
     box-sizing: border-box;
 }
@@ -30,6 +25,137 @@ body {
     font-family: system-ui, sans-serif;
     background: var(--bg-body);
     color: var(--text-body);
+}
+
+/* --------------------------------------------------------------- */
+/*  Navbar                                                         */
+/* --------------------------------------------------------------- */
+.navbar {
+    position: sticky;
+    top: 0;
+    margin-top: 0.75rem;
+    z-index: 40;
+    background: var(--bg-navbar);
+    border-bottom: 1px solid var(--border-base);
+    padding: .5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+    margin-left: .75rem;
+    font-size: 1.01rem;
+    font-weight: 500;
+    padding: .375rem .75rem;
+    border-radius: .375rem
+}
+
+.nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* brand (logo + title) ---------------------------------------- */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+}
+
+.brand img {
+    height: 28px;
+    width: 28px;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .08));
+}
+
+.nav-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.25rem;
+}
+
+.nav-link {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.875rem;
+    padding-bottom: 3px;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--indigo-600);
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1);
+}
+
+.nav-link.active::after {
+    transform: scaleX(1);
+}
+
+/* --------------------------------------------------------------- */
+/*  HERO section                                                   */
+/* --------------------------------------------------------------- */
+.hero {
+    background: url("/loan.avif") center / cover no-repeat;
+    color: #fff;
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 1rem;
+}
+
+.hero::before {
+    content: "";
+    inset: 0;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.35);
+}
+
+.hero-inner {
+    position: relative;
+    max-width: 650px;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.hero h1 {
+    font-size: 2.25rem;
+    margin: 0;
+}
+
+.hero p {
+    line-height: 1.55;
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--border-base);
+}
+
+.hero-cta {
+    font-size: 1rem;
+    background: var(--emerald-500);
+    border-color: var(--emerald-500);
 }
 
 /* --------------------------------------------------------------- */
@@ -118,12 +244,18 @@ select {
 
 .table th,
 .table td {
-    padding: 0.5rem;
+    padding: 0.8rem 0.1rem;
     white-space: nowrap;
+}
+
+.table td {
+    text-align: center;
 }
 
 .table thead {
     background: #f1f5f9;
+    font-size: .85rem;
+    font-weight: 500;
 }
 
 .table tbody tr {
@@ -170,85 +302,35 @@ select {
 }
 
 /* --------------------------------------------------------------- */
-/*  Navbar (improved)                                              */
-/* --------------------------------------------------------------- */
-.navbar {
-    position: sticky;
-    top: 0;
-    margin-top: 0.75rem;
-    /* small gap from top edge */
-    z-index: 40;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border-base);
-    padding: .5rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center
-}
-
-.navbar a {
-    text-decoration: none;
-    color: inherit;
-    margin-left: .75rem;
-    font-size: .875rem;
-    padding: .375rem .75rem;
-    border-radius: .375rem
-}
-
-.nav-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.brand {
-    font-weight: 600;
-    text-decoration: none;
-    color: inherit;
-}
-
-.nav-items {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 1.25rem;
-}
-
-.nav-link {
-    position: relative;
-    text-decoration: none;
-    color: inherit;
-    font-size: 0.875rem;
-    padding-bottom: 3px;
-    /* room for underline */
-}
-
-.nav-link::after {
-    /* animated underline */
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 2px;
-    width: 100%;
-    background: var(--indigo-600);
-    transform: scaleX(0);
-    transition: transform 0.2s ease;
-}
-
-.nav-link:hover::after {
-    transform: scaleX(1);
-}
-
-/* active state: keep underline only */
-.nav-link.active::after {
-    transform: scaleX(1);
-}
-
-/* --------------------------------------------------------------- */
 /*  Canvas charts inside cards                                     */
 /* --------------------------------------------------------------- */
 .card canvas {
     max-width: 100% !important;
+}
+
+/* simple modal ------------------------------------------------- */
+.dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .4);
+    z-index: 100;
+}
+
+.dialog-card {
+    background: var(--bg-card);
+    padding: 1.5rem 2rem;
+    border-radius: .5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+    max-width: 500px;
+    min-width: 400px;
+    text-align: center;
+
+}
+
+.dialog-card p {
+    font-size: 1em;
+    color: var(--text-body);
 }
