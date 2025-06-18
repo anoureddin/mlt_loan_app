@@ -7,7 +7,7 @@ export default function LandingPage() {
     return (
         <section className="hero">
             <div className="hero-inner">
-                <h1>Loan-Approval Demo</h1>
+                <h1>Loan Approval</h1>
 
                 <p>
                     Submit a loan application and instantly see whether our
