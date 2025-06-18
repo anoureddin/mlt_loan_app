@@ -104,7 +104,25 @@ def predict_one(raw_row: dict) -> str:
     Run the model on a single row of *raw* inputs.
     Returns "Y" (approved) or "N" (rejected).
     """
-    X_raw = pd.DataFrame([raw_row])
+    rename = {
+        "gender": "Gender",
+        "married": "Married",
+        "dependents": "Dependents",
+        "education": "Education",
+        "self_employed": "Self_Employed",
+        "applicant_income": "ApplicantIncome",
+        "coapplicant_income": "CoapplicantIncome",
+        "loan_amount": "LoanAmount",
+        "loan_amount_term": "Loan_Amount_Term",
+        "credit_history": "Credit_History",
+        "property_area": "Property_Area",
+    }
+    row_for_model = {rename.get(k, k): v for k, v in raw_row.items()}
+
+    # ② continue exactly as before
+    X_raw = pd.DataFrame([row_for_model])
+
+    # X_raw = pd.DataFrame([raw_row])
 
     if _EXPECTED_COLS is None:  # pipeline already handles preprocessing
         X = X_raw

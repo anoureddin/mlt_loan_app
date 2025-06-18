@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import NavBar from "./components/NavBar";
 
-function App() {
-  const [count, setCount] = useState(0)
+import LandingPage from "./pages/LandingPage";
+import LoanRequestsPage from "./pages/LoanRequestsPage";
+import NewLoanRequestPage from "./pages/NewLoanRequestPage";
+import EdaSummaryPage from "./pages/EdaSummaryPage";
+import DataIssuesPage from "./pages/DataIssuesPage";
+import ModelPerformancePage from "./pages/ModelPerformancePage";
 
+export default function App() {
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <NavBar />
 
-export default App
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+
+        {/* CRUD + analytics */}
+        <Route path="/requests" element={<LoanRequestsPage />} />
+        <Route path="/create" element={<NewLoanRequestPage />} />
+        <Route path="/eda" element={<EdaSummaryPage />} />
+        <Route path="/issues" element={<DataIssuesPage />} />
+        <Route path="/metrics" element={<ModelPerformancePage />} />
+
+        {/* fallback */}
+        <Route path="*" element={<LandingPage />} />
+      </Routes>
+    </>
+  );
+}

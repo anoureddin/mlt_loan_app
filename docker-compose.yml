@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: loan-backend
+    restart: unless-stopped
+    environment:
+      - DJANGO_SETTINGS_MODULE=loan_app.settings
+      - SECRET_KEY=django-insecure-dh7kkzp=p&0gcz!*=1!t8at65crroesugs_!kohpt*%3x0^m%^
+      - ALLOWED_HOSTS=backend,localhost
+      - CORS_ALLOWED_ORIGINS=http://frontend:80
+    volumes:
+       - ./backend:/app/backend
+       - ./eda_ml_data:/app/eda_ml_data:ro
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: loan-frontend
+    depends_on:
+      - backend
+    restart: unless-stopped
+    # expose on host at :5173
+    ports:
+      - "5173:80"
+    environment:
+      # compiled build will query http://backend:8000/api
+      - VITE_API_BASE_URL=http://backend:8000/api
