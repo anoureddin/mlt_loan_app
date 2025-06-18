@@ -1,35 +1,3 @@
-// /* ──────────────────────────────────────────────────────────────────────────────
-//    File: src/pages/DataIssuesPage.jsx
-//    ────────────────────────────────────────────────────────────────────────────── */
-// import { useEffect, useState } from "react";
-// import { api } from "../lib/api";
-// import Spinner from "../components/Spinner";
-
-// export default function DataIssuesPage() {
-//     const [data, setData] = useState(null);
-//     const [error, setError] = useState(null);
-
-//     useEffect(() => {
-//         const run = async () => {
-//             try { setData(await api.dataIssues()); }
-//             catch (err) { setError(err.message); }
-//         };
-//         run();
-//     }, []);
-
-//     if (error) return <p style={{ color: "#dc2626" }}>{error}</p>;
-//     if (!data) return <Spinner />;
-
-//     return (
-//         <div className="card">
-//             <pre style={{ whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: "70vh" }}>{JSON.stringify(data, null, 2)}</pre>
-//         </div>
-//     );
-// }
-
-/* ──────────────────────────────────────────────────────────────────────────────
-   File: src/pages/DataIssuesPage.jsx   *** UPDATED ***
-   ────────────────────────────────────────────────────────────────────────────── */
 import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import Spinner from "../components/Spinner";

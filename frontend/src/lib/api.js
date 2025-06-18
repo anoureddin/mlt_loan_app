@@ -1,34 +1,19 @@
-/* ──────────────────────────────────────────────────────────────────────────────
-   File: src/lib/api.js  (tiny wrapper around fetch)
-   ────────────────────────────────────────────────────────────────────────────── */
 const baseURL = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8000/api";
 
-// async function request(path, options = {}) {
-//     const res = await fetch(`${baseURL}${path}`, {
-//         headers: { "Content-Type": "application/json" },
-//         ...options,
-//     });
-//     if (!res.ok) {
-//         const msg = await res.text();
-//         throw new Error(msg || res.statusText);
-//     }
-//     return res.status === 204 ? null : await res.json();
-// }
-
 async function request(path, options = {}) {
-    console.log("FETCH", baseURL + path);          // 👈
+    // console.log("FETCH", baseURL + path);          
     try {
         const res = await fetch(`${baseURL}${path}`, {
             headers: { "Content-Type": "application/json" },
             ...options,
         });
-        console.log("STATUS", res.status);           // 👈
+        // console.log("STATUS", res.status);           
         if (!res.ok) throw new Error(await res.text() || res.statusText);
         const data = res.status === 204 ? null : await res.json();
-        console.log("DATA", data);                   // 👈
+        // console.log("DATA", data);                    
         return data;
     } catch (err) {
-        console.error("FETCH ERR", err);             // 👈
+        // console.error("FETCH ERR", err);             
         throw err;
     }
 }

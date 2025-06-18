@@ -1,33 +1,3 @@
-// /* ──────────────────────────────────────────────────────────────────────────────
-//    File: src/pages/ModelPerformancePage.jsx
-//    ────────────────────────────────────────────────────────────────────────────── */
-// import { useEffect, useState } from "react";
-// import { api } from "../lib/api";
-// import { Spinner } from "../components/Spinner";
-
-// export default function ModelPerformancePage() {
-//     const [data, setData] = useState(null);
-//     const [error, setError] = useState(null);
-
-//     useEffect(() => {
-//         const run = async () => {
-//             try { setData(await api.modelPerformance()); }
-//             catch (err) { setError(err.message); }
-//         };
-//         run();
-//     }, []);
-
-//     if (error) return <p style={{ color: "#dc2626" }}>{error}</p>;
-//     if (!data) return <Spinner />;
-
-//     return (
-//         <div className="card">
-//             <pre style={{ whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: "70vh" }}>{JSON.stringify(data, null, 2)}</pre>
-//         </div>
-//     );
-// }
-
-// src/pages/ModelPerformancePage.jsx
 import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import Spinner from "../components/Spinner";
@@ -132,12 +102,12 @@ export default function ModelPerformancePage() {
                 </table>
             </div>
 
-            <p style={{ fontSize: "0.8rem", marginTop: "0.5rem" }}>
+            {/* <p style={{ fontSize: "0.8rem", marginTop: "0.5rem" }}>
                 Source files:&nbsp;
                 {data.source_files.map((f) => (
                     <code key={f}>{f}&nbsp;</code>
                 ))}
-            </p>
+            </p> */}
         </div>
     );
 }

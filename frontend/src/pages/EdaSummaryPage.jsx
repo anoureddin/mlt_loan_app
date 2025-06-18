@@ -1,47 +1,7 @@
-// /* ──────────────────────────────────────────────────────────────────────────────
-//    File: src/pages/EdaSummaryPage.jsx
-//    ────────────────────────────────────────────────────────────────────────────── */
-// import { useEffect, useState } from "react";
-// import { api } from "../lib/api";
-// import Button from "../components/Button";
-// import Spinner from "../components/Spinner";
-
-// export default function EdaSummaryPage() {
-//     const [cleaned, setCleaned] = useState(true);
-//     const [data, setData] = useState(null);
-//     const [error, setError] = useState(null);
-
-//     useEffect(() => {
-//         const run = async () => {
-//             try {
-//                 setError(null); setData(null);
-//                 setData(cleaned ? await api.edaSummary() : await api.edaRaw());
-//             } catch (err) {
-//                 setError(err.message);
-//             }
-//         };
-//         run();
-//     }, [cleaned]);
-
-//     if (error) return <p style={{ color: "#dc2626" }}>{error}</p>;
-//     if (!data) return <Spinner />;
-
-//     return (
-//         <div className="card">
-//             <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
-//                 <Button variant={cleaned ? "primary" : "outline"} onClick={() => setCleaned(true)}>Cleaned</Button>
-//                 <Button variant={!cleaned ? "primary" : "outline"} onClick={() => setCleaned(false)}>Raw</Button>
-//             </div>
-//             <pre style={{ whiteSpace: "pre-wrap", overflowX: "auto", maxHeight: "70vh" }}>{JSON.stringify(data, null, 2)}</pre>
-//         </div>
-//     );
-// }
-
 import React, { useEffect, useState } from "react";
 import { api } from "../lib/api";
 import Button from "../components/Button";
 import Spinner from "../components/Spinner";
-
 import { Bar } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -54,53 +14,49 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
+const labelize = (s) =>
+    s
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+
 export default function EdaSummaryPage() {
     const [cleaned, setCleaned] = useState(true);
     const [data, setData] = useState(null);
     const [error, setError] = useState("");
 
-    /* ─────────────────────────────────────────────────────────────
-       Fetch either the cleaned or raw dataset summary from the API
-    ────────────────────────────────────────────────────────────────*/
+    /* fetch either /eda-summary/ or /eda-raw/ */
     useEffect(() => {
-        const fetchData = cleaned ? api.edaSummary() : api.edaRaw();
-        fetchData.then(setData).catch((e) => setError(e.message));
+        (cleaned ? api.edaSummary() : api.edaRaw())
+            .then(setData)
+            .catch((e) => setError(e.message));
     }, [cleaned]);
 
-    /* ─────────────────────────────────────────────────────────────
-       Loading / error states
-    ────────────────────────────────────────────────────────────────*/
-    if (error) {
+    if (error)
         return (
             <p className="container" style={{ color: "#dc2626" }}>
                 Error: {error}
             </p>
         );
-    }
-    if (!data) {
+    if (!data)
         return (
             <div className="container">
                 <Spinner />
             </div>
         );
-    }
 
-    /* ─────────────────────────────────────────────────────────────
-       Chart for missing-value counts
-    ────────────────────────────────────────────────────────────────*/
+    /* chart data with prettified labels */
     const chartData = {
-        labels: Object.keys(data.missing_per_column),
+        labels: Object.keys(data.missing_per_column).map(labelize),
         datasets: [
             {
                 label: "Missing",
                 data: Object.values(data.missing_per_column),
                 backgroundColor: "#dc262680",
-                borderWidth: 1,
             },
         ],
     };
 
-    const statOrder = ["count", "mean", "std", "min", "25%", "50%", "75%", "max"];
+    const statCols = ["count", "mean", "std", "min", "25%", "50%", "75%", "max"];
 
     return (
         <div className="container" style={{ padding: "1.5rem 0" }}>
@@ -120,16 +76,14 @@ export default function EdaSummaryPage() {
                 </Button>
             </div>
 
-            {/* Dataset size badge */}
             <p>
                 <span className="badge">
                     {data.shape[0]} rows × {data.shape[1]} cols
                 </span>
             </p>
 
-            {/* Missing-value bar chart */}
+            {/* Missing-value chart */}
             <div className="card" style={{ margin: "1rem 0" }}>
-                <h3>Missing Values</h3>
                 <Bar
                     data={chartData}
                     options={{
@@ -140,24 +94,24 @@ export default function EdaSummaryPage() {
                 />
             </div>
 
-            {/* Numerical summary table */}
+            {/* Numerical summary */}
             <div className="card">
                 <h3>Numerical summary</h3>
                 <table className="table" style={{ marginTop: ".5rem" }}>
                     <thead>
                         <tr>
                             <th>Variable</th>
-                            {statOrder.map((s) => (
-                                <th key={s}>{s}</th>
+                            {statCols.map((c) => (
+                                <th key={c}>{c}</th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
                         {Object.entries(data.numerical_summary).map(([varName, vals]) => (
                             <tr key={varName}>
-                                <td>{varName}</td>
-                                {statOrder.map((s) => (
-                                    <td key={s}>{vals[s]}</td>
+                                <td>{labelize(varName)}</td>
+                                {statCols.map((c) => (
+                                    <td key={c}>{vals[c]}</td>
                                 ))}
                             </tr>
                         ))}
@@ -165,7 +119,7 @@ export default function EdaSummaryPage() {
                 </table>
             </div>
 
-            {/* Categorical summary (top 10 per column) */}
+            {/* Categorical summary */}
             <div style={{ marginTop: "1.5rem" }}>
                 <h3>Categorical summary (top 10 values each)</h3>
                 <div style={{ display: "grid", gap: "1rem" }}>
@@ -176,7 +130,7 @@ export default function EdaSummaryPage() {
                                 className="card"
                                 style={{ padding: ".75rem" }}
                             >
-                                <strong>{colName}</strong>
+                                <strong>{labelize(colName)}</strong>
                                 <table className="table" style={{ marginTop: ".25rem" }}>
                                     <thead>
                                         <tr>
