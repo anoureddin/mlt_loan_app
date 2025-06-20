@@ -41,6 +41,8 @@ repo-root/
 
 ## 2  Running **locally** (no Docker)
 
+You should have python3.12 or higher installed before running the next commands
+
 ```bash
 # ① Python backend
 cd backend
@@ -49,10 +51,14 @@ source venv/bin/activate           # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py migrate           # first time only
 python manage.py runserver 0.0.0.0:8000     # http://localhost:8000/api/requests/
+```
 
+You should have node installed before running the next commands
+
+```bash
 # ② React frontend (in another terminal)
 cd frontend
-npm ci
+npm install
 npm run dev                        # http://localhost:5173
 ```
 
