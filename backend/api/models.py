@@ -42,3 +42,4 @@ class LoanRequest(models.Model):
     credit_history = models.FloatField()
     property_area = models.CharField(max_length=20, choices=PROPERTY_AREA_CHOICES)
     prediction = models.CharField(max_length=1, null=True)  # Y or N
+    prediction_probability = models.CharField(max_length=10, null=True)

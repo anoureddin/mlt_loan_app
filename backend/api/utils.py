@@ -130,7 +130,9 @@ def predict_one(raw_row: dict) -> str:
         X = _prepare(X_raw)
 
     pred = get_model().predict(X)[0]
-    return "Y" if pred in (1, "Y") else "N"
+    probability = get_model().predict_proba(X)[:, 1][0]
+    proba = "{0:.3f}".format(probability)
+    return "Y" if pred in (1, "Y") else "N", proba
 
 
 # ───────────────────────────────────────────────────────────────

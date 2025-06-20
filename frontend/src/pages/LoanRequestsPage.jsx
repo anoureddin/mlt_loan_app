@@ -58,9 +58,25 @@ export default function LoanRequestsPage() {
                     <tbody>
                         {rows.map((row) => (
                             <tr key={row.id}>
-                                {Object.entries(row).map(([k, v]) => (
-                                    <td key={k}>{String(v)}</td>
-                                ))}
+                                {Object.entries(row).map(([key, val]) => {
+                                    let shown;
+
+                                    if (key === "prediction_probability") {
+                                        const num = val != null && !isNaN(parseFloat(val))
+                                            ? parseFloat(val)
+                                            : null;
+
+                                        shown = num !== null
+                                            ? `${(num * 100).toFixed(1)}%`
+                                            : "N/A";
+                                    } else {
+                                        shown = val != null
+                                            ? String(val)
+                                            : "";
+                                    }
+                                    return <td key={key}>{shown}</td>;
+                                })}
+
                                 <td>
                                     <Button variant="danger" onClick={() => setPendingId(row.id)}>Delete</Button>
                                 </td>

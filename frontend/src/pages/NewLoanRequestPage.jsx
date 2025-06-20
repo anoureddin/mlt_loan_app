@@ -71,6 +71,11 @@ export default function NewLoanRequestPage() {
         setValues(defaultValues);
     };
 
+    // const prob = parseFloat(result.prediction_probability);       // 0-1
+    // const isApproved = result.prediction === "Y";
+    // const shownProb = isApproved ? prob : 1 - prob;               // إذا مرفوض نعرض 1-prob
+    // const pct = (shownProb * 100).toFixed(1);
+
     if (submitting) return <Spinner />;
 
     return (
@@ -124,29 +129,52 @@ export default function NewLoanRequestPage() {
 
                     <p>
                         <strong>Decision:&nbsp;</strong>
-                        <span
-                            style={{
-                                textTransform: "uppercase",
-                                marginLeft: "10px",
-                                fontWeight: "600",
-                                color: result.prediction === "Y" ? "var(--emerald-500)" : "var(--rose-500)",
-                            }}
-                        >
-                            {result.prediction === "Y" ? "Approved" : "Rejected"}
-                        </span>
+                        {(() => {
+                            const probApprove = parseFloat(result.prediction_probability);
+                            const isApproved = result.prediction === "Y";
+                            const pct = (probApprove * 100).toFixed(1); // e.g. 49.7
+                            return (
+                                <>
+                                    <span
+                                        style={{
+                                            textTransform: "uppercase",
+                                            marginLeft: 10,
+                                            fontWeight: 600,
+                                            color: isApproved
+                                                ? "var(--emerald-500)"
+                                                : "var(--rose-500)",
+                                        }}
+                                    >
+                                        {isApproved ? "Approved" : "Rejected"}
+                                    </span>
+                                    &nbsp;
+                                    <em style={{ fontSize: "0.9rem" }}>
+                                        (with probability of{" "}
+                                        {isApproved ? "approval" : "rejection"} of {pct}%)
+                                    </em>
+                                </>
+                            );
+                        })()}
                     </p>
 
                     <table className="table" style={{ marginTop: "0.75rem" }}>
                         <tbody>
                             {Object.entries(result).map(
-                                ([key, val]) =>
-                                    key !== "id" && (
+                                ([key, val]) => {
+                                    if (key === "id") return null;             // only skip the DB id
+                                    /* render probability as 1-decimal % */
+                                    const shown =
+                                        key === "prediction_probability"
+                                            ? (parseFloat(val) * 100).toFixed(1) + "%"
+                                            : String(val);
+
+                                    return (
                                         <tr key={key}>
                                             <td>{labelize(key)}</td>
-                                            <td>{String(val)}</td>
+                                            <td>{shown}</td>
                                         </tr>
-                                    )
-                            )}
+                                    );
+                                })}
                         </tbody>
                     </table>
 
