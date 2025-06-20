@@ -30,7 +30,12 @@ def loan_requests(request):
     instance = ser.save()
     # prediction (ignore 'prediction' field from client)
     raw_for_model = {k: v for k, v in ser.data.items() if k != "prediction"}
-    instance.prediction = utils.predict_one(raw_for_model)
+    # call the model – now returns (decision, probability)
+    decision, prob = utils.predict_one(raw_for_model)
+
+    # save both values
+    instance.prediction = decision
+    instance.prediction_probability = prob  # <-- new line
     instance.save()
 
     return Response(LoanRequestSerializer(instance).data, status=201)
