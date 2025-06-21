@@ -23,12 +23,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-dh7kkzp=p&0gcz!*=1!t8at65crroesugs_!kohpt*%3x0^m%^"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".railway.app", "localhost"]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://mltloanapp-production.up.railway.app",
 ]
 
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "api",
     "corsheaders",
+    "frontend_app",
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "loan_app.urls"
@@ -122,7 +125,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/assets/"
+
+# Tell Django where to find the built React index.html
+TEMPLATES[0]["DIRS"] += [BASE_DIR / "frontend_app/templates"]
+
+# Optional if you're also serving static assets like JS/CSS from /dist/assets
+STATICFILES_DIRS = [BASE_DIR / "frontend_app/templates/frontend/assets"]
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
