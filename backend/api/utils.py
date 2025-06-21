@@ -12,13 +12,20 @@ import pandas as pd
 # ───────────────────────────────────────────────────────────────
 # PATHS – adjust if your folders differ
 # ───────────────────────────────────────────────────────────────
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
-DATA_ROOT = (BASE_DIR / "../../eda_ml_data").resolve()
+# DATA_ROOT = (BASE_DIR / "../../eda_ml_data").resolve()
+# DATASET_DIR = DATA_ROOT / "datasets"
+# RESULTS_DIR = DATA_ROOT / "results"
+# MODEL_DIR = DATA_ROOT / "models"
+
+# This dirs only for production-test branch
+DATA_ROOT = BASE_DIR / "eda_ml_data"
+
 DATASET_DIR = DATA_ROOT / "datasets"
 RESULTS_DIR = DATA_ROOT / "results"
 MODEL_DIR = DATA_ROOT / "models"
-
+#################################
 RAW_CSV = DATASET_DIR / "loan_prediction.csv"
 CLEAN_CSV = DATASET_DIR / "cleaned_data_loan_prediction.csv"
 MODEL_PATH = MODEL_DIR / "logistic_regression_weighted.pkl"
